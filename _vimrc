@@ -4,7 +4,7 @@ scriptencoding utf-8
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim 8.1
 "
-" Last Change: 23-Mar-2019.
+" Last Change: 20-Jul-2020.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -132,9 +132,12 @@ set smartcase
 " 編集に関する設定:
 "
 " タブの画面上での幅
-set tabstop=8
+set tabstop=4
 " タブをスペースに展開しない (expandtab:展開する)
-set noexpandtab
+set expandtab
+" タブの代わりに挿入するスペースの数
+set softtabstop=4
+set shiftwidth=4
 " 自動的にインデントする (noautoindent:インデントしない)
 set autoindent
 " バックスペースでインデントや改行を削除できるようにする
@@ -152,13 +155,13 @@ set formatoptions+=mM
 " GUI固有ではない画面表示の設定:
 "
 " 行番号を非表示 (number:表示)
-set nonumber
+set number
 " ルーラーを表示 (noruler:非表示)
 set ruler
 " タブや改行を非表示 (list:表示)
-set nolist
+set list
 " どの文字でタブや改行を表示するかを設定
-"set listchars=tab:>-,extends:<,trail:-,eol:<
+set listchars=tab:>-,extends:<,trail:_,eol:$
 " 長い行を折り返して表示 (nowrap:折り返さない)
 set wrap
 " 常にステータス行を表示 (詳細は:he laststatus)
@@ -170,7 +173,9 @@ set showcmd
 " タイトルを表示
 set title
 " 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
-"colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
+colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
+" カーソル行に色つけ
+set cursorline
 
 "---------------------------------------------------------------------------
 " ファイル操作に関する設定:
@@ -206,9 +211,10 @@ endif
 
 "---------------------------------------------------------------------------
 " コンソール版で環境変数$DISPLAYが設定されていると起動が遅くなる件へ対応
-if !has('gui_running') && has('xterm_clipboard')
-  set clipboard=exclude:cons\\\|linux\\\|cygwin\\\|rxvt\\\|screen
-endif
+" if !has('gui_running') && has('xterm_clipboard')
+"   set clipboard=exclude:cons\\\|linux\\\|cygwin\\\|rxvt\\\|screen
+" endif
+set clipboard=unnamed
 
 "---------------------------------------------------------------------------
 " プラットホーム依存の特別な設定
