@@ -1,0 +1,105 @@
+# ＠＠
+# dein.toml
+
+# 置換のプレビュー
+[[plugins]]
+repo = 'markonm/traces.vim'
+
+# ステータスバー
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  set noshowmode
+  let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'mode_map': {'c': 'NORMAL'},
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ]
+      \ },
+      \ 'component_function': {
+      \   'modified': 'LightlineModified',
+      \   'readonly': 'LightlineReadonly',
+      \   'fugitive': 'LightlineFugitive',
+      \   'filename': 'LightlineFilename',
+      \   'fileformat': 'LightlineFileformat',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileencoding': 'LightlineFileencoding',
+      \   'mode': 'LightlineMode'
+      \ },
+      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
+      \ }
+
+  function! LightlineModified()
+    return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  endfunction
+
+  function! LightlineReadonly()
+    return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? 'x' : ''
+  endfunction
+
+  function! LightlineFilename()
+    return ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+      \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+      \  &ft == 'unite' ? unite#get_status_string() :
+      \  &ft == 'vimshell' ? vimshell#get_status_string() :
+      \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+      \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+  endfunction
+
+  function! LightlineFugitive()
+    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head')
+      return fugitive#head()
+    else
+      return ''
+    endif
+  endfunction
+
+  function! LightlineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+
+  function! LightlineFiletype()
+    return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  endfunction
+
+  function! LightlineFileencoding()
+    return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+  endfunction
+
+  function! LightlineMode()
+    return winwidth(0) > 60 ? lightline#mode() : ''
+  endfunction
+'''
+
+# カラースキーマ
+[[plugins]]
+repo = 'jacoborus/tender.vim'
+hook_add = '''
+  set background=dark
+  " colorscheme 設定は source 後に行う必要があるので VimEnter で行う。
+  " 但し Colorscheme イベントの発生が抑制されないよう nented を付ける。
+  autocmd VimEnter * ++nested colorscheme tender
+
+  " set lighline theme inside lightline config
+  let g:lightline = { 'colorscheme': 'tender' }
+'''
+
+# ファイラ
+[[plugins]]
+repo = 'preservim/nerdtree'
+hook_add = '''
+  nnoremap <silent><C-e> :NERDTreeToggle<CR>
+'''
+# ファイルセレクタ
+[[plugins]]
+repo = 'kien/ctrlp.vim'
+
+# NERDTreeやCtrlPにDevIconsを適用
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+
+# NERDTreeに色分けを適用
+[[plugins]]
+repo = 'tiagofumo/vim-nerdtree-syntax-highlight'
+

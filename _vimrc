@@ -1,71 +1,33 @@
+" ＠＠
+" .vimrc
+"---------------------------------------------------------------------------
 scriptencoding utf-8
-" vim:set ts=8 sts=2 sw=2 tw=0: (この行に関しては:help modelineを参照)
-"
-" An example for a Japanese version vimrc file.
-" 日本語版のデフォルト設定ファイル(vimrc) - Vim 8.1
-"
-" Last Change: 20-Jul-2020.
-" Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
-"
-" 解説:
-" このファイルにはVimの起動時に必ず設定される、編集時の挙動に関する設定が書
-" かれています。GUIに関する設定はgvimrcに書かかれています。
-"
-" 個人用設定は_vimrcというファイルを作成しそこで行ないます。_vimrcはこのファ
-" イルの後に読込まれるため、ここに書かれた内容を上書きして設定することが出来
-" ます。_vimrcは$HOMEまたは$VIMに置いておく必要があります。$HOMEは$VIMよりも
-" 優先され、$HOMEでみつかった場合$VIMは読込まれません。
-"
-" 管理者向けに本設定ファイルを直接書き換えずに済ませることを目的として、サイ
-" トローカルな設定を別ファイルで行なえるように配慮してあります。Vim起動時に
-" サイトローカルな設定ファイル($VIM/vimrc_local.vim)が存在するならば、本設定
-" ファイルの主要部分が読み込まれる前に自動的に読み込みます。
-"
-" 読み込み後、変数g:vimrc_local_finishが非0の値に設定されていた場合には本設
-" 定ファイルに書かれた内容は一切実行されません。デフォルト動作を全て差し替え
-" たい場合に利用して下さい。
-"
-" 参考:
-"   :help vimrc
-"   :echo $HOME
-"   :echo $VIM
-"   :version
 
 "---------------------------------------------------------------------------
-" サイトローカルな設定($VIM/vimrc_local.vim)があれば読み込む。読み込んだ後に
-" 変数g:vimrc_local_finishに非0な値が設定されていた場合には、それ以上の設定
-" ファイルの読込を中止する。
-if 1 && filereadable($VIM . '/vimrc_local.vim')
-  unlet! g:vimrc_local_finish
-  source $VIM/vimrc_local.vim
-  if exists('g:vimrc_local_finish') && g:vimrc_local_finish != 0
-    finish
-  endif
+" 文字コード・改行コード設定:
+
+" 文字コードをUFT-8に設定
+set encoding=utf-8
+set termencoding=utf-8
+set fileencodings=utf-8,cp932,euc-jp,sjis
+set ambiwidth=double
+
+" 日本語を含まない場合は fileencoding に encoding を使うようにする
+if has('autocmd')
+    function! AU_ReCheck_FENC()
+    if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
+        let &fileencoding=&encoding
+    endif
+    endfunction
+    autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
 
-"---------------------------------------------------------------------------
-" ユーザ優先設定($HOME/.vimrc_first.vim)があれば読み込む。読み込んだ後に変数
-" g:vimrc_first_finishに非0な値が設定されていた場合には、それ以上の設定ファ
-" イルの読込を中止する。
-if 1 && exists('$HOME') && filereadable($HOME . '/.vimrc_first.vim')
-  unlet! g:vimrc_first_finish
-  source $HOME/.vimrc_first.vim
-  if exists('g:vimrc_first_finish') && g:vimrc_first_finish != 0
-    finish
-  endif
-endif
-
-" plugins下のディレクトリをruntimepathへ追加する。
-for s:path in split(glob($VIM.'/plugins/*'), '\n')
-  if s:path !~# '\~$' && isdirectory(s:path)
-    let &runtimepath = &runtimepath.','.s:path
-  end
-endfor
-unlet s:path
+" 改行コードの自動認識
+set fileformats=unix,dos,mac
 
 "---------------------------------------------------------------------------
 " 日本語対応のための設定:
-"
+
 " ファイルを読込む時にトライする文字エンコードの順序を確定する。漢字コード自
 " 動判別機能を利用する場合には別途iconv.dllが必要。iconv.dllについては
 " README_w32j.txtを参照。ユーティリティスクリプトを読み込むことで設定される。
@@ -97,157 +59,206 @@ if !has('gui_running') && &encoding != 'cp932' && &term == 'win32'
 endif
 
 "---------------------------------------------------------------------------
-" メニューファイルが存在しない場合は予め'guioptions'を調整しておく
-if 1 && !filereadable($VIMRUNTIME . '/menu.vim') && has('gui_running')
-  set guioptions+=M
-endif
+" 基本設定:
 
-"---------------------------------------------------------------------------
-" Bram氏の提供する設定例をインクルード (別ファイル:vimrc_example.vim)。これ
-" 以前にg:no_vimrc_exampleに非0な値を設定しておけばインクルードはしない。
-if 1 && (!exists('g:no_vimrc_example') || g:no_vimrc_example == 0)
-  if &guioptions !~# "M"
-    " vimrc_example.vimを読み込む時はguioptionsにMフラグをつけて、syntax on
-    " やfiletype plugin onが引き起こすmenu.vimの読み込みを避ける。こうしない
-    " とencに対応するメニューファイルが読み込まれてしまい、これの後で読み込
-    " まれる.vimrcでencが設定された場合にその設定が反映されずメニューが文字
-    " 化けてしまう。
-    set guioptions+=M
-    source $VIMRUNTIME/vimrc_example.vim
-    set guioptions-=M
-  else
-    source $VIMRUNTIME/vimrc_example.vim
-  endif
-endif
+" バックアップファイルを作らない (nowritebackup:上書きする前の一時バックアップも作らない)
+set nobackup
+set writebackup
 
-"---------------------------------------------------------------------------
-" 検索の挙動に関する設定:
-"
-" 検索時に大文字小文字を無視 (noignorecase:無視しない)
-set ignorecase
-" 大文字小文字の両方が含まれている場合は大文字小文字を区別
-set smartcase
+" スワップファイルを作らない
+set noswapfile
 
-"---------------------------------------------------------------------------
-" 編集に関する設定:
-"
-" タブの画面上での幅
-set tabstop=4
-" タブをスペースに展開しない (expandtab:展開する)
-set expandtab
-" タブの代わりに挿入するスペースの数
-set softtabstop=4
-set shiftwidth=4
-" 自動的にインデントする (noautoindent:インデントしない)
-set autoindent
-" バックスペースでインデントや改行を削除できるようにする
+" 編集中のファイルが変更されたら自動で読み直す
+set autoread
+
+" バッファが編集中でもその他のファイルを開けるように
+set hidden
+
+" vim の矩形選択で文字が無くても右へ進める
+set virtualedit=block
+
+" 挿入モードでバックスペースで削除できるようにする
 set backspace=indent,eol,start
-" 検索時にファイルの最後まで行ったら最初に戻る (nowrapscan:戻らない)
-set wrapscan
-" 括弧入力時に対応する括弧を表示 (noshowmatch:表示しない)
-set showmatch
-" コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
+
+" 全角文字専用の設定
+set ambiwidth=double
+
+" wildmenuオプションを有効 (vimバーからファイルを選択できる)
 set wildmenu
+
+" エラーメッセージの表示時にビープを鳴らさない
+set noerrorbells
+
+" ビープ音を可視化
+set visualbell
+
+" ヤンクでクリップボードにコピー
+set clipboard=unnamed,autoselect
+
+" すべての数を10進数として扱う
+set nrformats=
+
+" 行をまたいで移動
+set whichwrap=b,s,h,l,<,>,[,],~
+
+" 折り返し時に表示行単位での移動できるようにする
+nnoremap j gj
+nnoremap k gk
+
 " テキスト挿入中の自動折り返しを日本語に対応させる
 set formatoptions+=mM
 
 "---------------------------------------------------------------------------
 " GUI固有ではない画面表示の設定:
-"
-" 行番号を非表示 (number:表示)
-set number
-" ルーラーを表示 (noruler:非表示)
-set ruler
-" タブや改行を非表示 (list:表示)
-set list
-" どの文字でタブや改行を表示するかを設定
-set listchars=tab:>-,extends:<,trail:_,eol:$
-" 長い行を折り返して表示 (nowrap:折り返さない)
-set wrap
-" 常にステータス行を表示 (詳細は:he laststatus)
-set laststatus=2
-" コマンドラインの高さ (Windows用gvim使用時はgvimrcを編集すること)
-set cmdheight=2
-" コマンドをステータス行に表示
-set showcmd
+
 " タイトルを表示
 set title
-" 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
-colorscheme evening " (Windows用gvim使用時はgvimrcを編集すること)
-" カーソル行に色つけ
+
+" 行番号を表示 (number:表示)
+set number
+
+" ルーラーを表示 (noruler:非表示)
+set ruler
+
+" 長い行を折り返して表示 (nowrap:折り返さない)
+set wrap
+
+" 現在の行を強調表示
 set cursorline
 
-"---------------------------------------------------------------------------
-" ファイル操作に関する設定:
-"
-" バックアップファイルを作成しない (次行の先頭の " を削除すれば有効になる)
-"set nobackup
+" 現在の列を強調表示
+" set cursorcolumn
 
+" 行末の1文字先までカーソルを移動できるように
+set virtualedit=onemore
 
-"---------------------------------------------------------------------------
-" ファイル名に大文字小文字の区別がないシステム用の設定:
-"   (例: DOS/Windows/MacOS)
-"
-if filereadable($VIM . '/vimrc') && filereadable($VIM . '/ViMrC')
-  " tagsファイルの重複防止
-  set tags=./tags,tags
+" Windowsでパスの区切り文字をスラッシュで扱う
+set shellslash
+
+" 対応する括弧やブレースを表示
+set showmatch matchtime=1
+
+" インデント方法の変更
+set cinoptions+=:0
+
+" 自動的にインデントする (noautoindent:インデントしない)
+" set autoindent
+
+" 改行時に入力された行の末尾に合わせて次の行のインデントを増減する (スマートインデント)
+set smartindent
+
+" ステータスラインを常に表示
+set laststatus=2
+
+" コマンドラインの高さ (Windows用gvim使用時はgvimrcを編集すること)
+set cmdheight=2
+
+" コマンドラインの補完
+set wildmode=list:longest
+
+" ウィンドウの右下にまだ実行していない入力中のコマンドを表示
+set showcmd
+
+" 省略されずに表示
+set display=lastline
+
+"タブ、空白、改行の可視化
+set list
+set listchars=tab:>.,trail:_,eol:$,extends:>,precedes:<,nbsp:%
+
+"全角スペースをハイライト表示
+function! ZenkakuSpace()
+    highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
+endfunction
+   
+if has('syntax')
+    augroup ZenkakuSpace
+        autocmd!
+        autocmd ColorScheme       * call ZenkakuSpace()
+        autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+    augroup END
+    call ZenkakuSpace()
 endif
 
+" Tab文字を半角スペースにする
+set expandtab
+
+" インデント幅
+set shiftwidth=2
+
+" タブキー押下時に挿入される文字幅を指定
+set softtabstop=2
+
+" ファイル内にあるタブ文字の表示幅
+set tabstop=2
+
+" シンタックスハイライトの有効化
+syntax enable
+
 "---------------------------------------------------------------------------
-" コンソールでのカラー表示のための設定(暫定的にUNIX専用)
-if has('unix') && !has('gui_running')
-  let s:uname = system('uname')
-  if s:uname =~? "linux"
-    " no need to use builtin_term for Linux
-  elseif s:uname =~? "freebsd"
-    set term=builtin_cons25
-  elseif s:uname =~? "Darwin"
-    set term=builtin_beos-ansi
-  else
-    set term=builtin_xterm
+" 検索の挙動に関する設定:
+
+" 検索文字列が小文字の場合は大文字小文字を区別なく検索する (noignorecase:無視しない)
+set ignorecase
+
+" 検索文字列に大文字が含まれている場合は区別して検索する
+set smartcase
+
+" 検索文字列入力時に順次対象文字列にヒットさせる
+set incsearch
+
+" 検索時に最後まで行ったら最初に戻る
+set wrapscan
+
+" 検索語をハイライト表示
+set hlsearch
+
+" Escの2回押しでハイライト消去
+nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+
+"---------------------------------------------------------------------------
+" dein.vim settings
+
+if &compatible
+  set nocompatible
+endif
+
+" dein.vimインストール時に指定したディレクトリをセット
+let s:dein_dir = expand('~/.cache/dein')
+
+" dein.vimの実体があるディレクトリをセット
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+" dein.vimが存在していない場合はgithubからclone
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
   endif
-  unlet s:uname
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+
+  " dein.toml, dein_layz.tomlファイルのディレクトリをセット
+  let s:toml_dir = expand('~/.vim')
+
+  " 起動時に読み込むプラグイン群
+  call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
+
+  " 遅延読み込みしたいプラグイン群
+  call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
+
+  call dein#end()
+  call dein#save_state()
+endif
+
+filetype plugin indent on
+syntax enable
+
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
 "---------------------------------------------------------------------------
-" コンソール版で環境変数$DISPLAYが設定されていると起動が遅くなる件へ対応
-" if !has('gui_running') && has('xterm_clipboard')
-"   set clipboard=exclude:cons\\\|linux\\\|cygwin\\\|rxvt\\\|screen
-" endif
-set clipboard=unnamed
 
-"---------------------------------------------------------------------------
-" プラットホーム依存の特別な設定
-
-" WinではPATHに$VIMが含まれていないときにexeを見つけ出せないので修正
-if has('win32') && $PATH !~? '\(^\|;\)' . escape($VIM, '\\') . '\(;\|$\)'
-  let $PATH = $VIM . ';' . $PATH
-endif
-
-if has('mac')
-  " Macではデフォルトの'iskeyword'がcp932に対応しきれていないので修正
-  set iskeyword=@,48-57,_,128-167,224-235
-endif
-
-"---------------------------------------------------------------------------
-" KaoriYaでバンドルしているプラグインのための設定
-
-" autofmt: 日本語文章のフォーマット(折り返し)プラグイン.
-set formatexpr=autofmt#japanese#formatexpr()
-
-" vimdoc-ja: 日本語ヘルプを無効化する.
-if kaoriya#switch#enabled('disable-vimdoc-ja')
-  let &rtp = join(filter(split(&rtp, ','), 'v:val !~ "[/\\\\]plugins[/\\\\]vimdoc-ja"'), ',')
-endif
-
-" vimproc: 同梱のvimprocを無効化する
-if kaoriya#switch#enabled('disable-vimproc')
-  let &rtp = join(filter(split(&rtp, ','), 'v:val !~ "[/\\\\]plugins[/\\\\]vimproc$"'), ',')
-endif
-
-" go-extra: 同梱の vim-go-extra を無効化する
-if kaoriya#switch#enabled('disable-go-extra')
-  let &rtp = join(filter(split(&rtp, ','), 'v:val !~ "[/\\\\]plugins[/\\\\]golang$"'), ',')
-endif
-
-" Copyright (C) 2009-2018 KaoriYa/MURAOKA Taro

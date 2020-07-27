@@ -1,0 +1,7 @@
+# ＠＠
+# dein_lazy.toml
+
+# Google翻訳
+[[plugins]]
+repo = 'skanehira/translate.vim'
+
