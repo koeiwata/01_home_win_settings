@@ -1,0 +1,45 @@
+# ============================================================
+# ■bash alias設定
+# %version / 1.3
+#
+# by Koei Watanabe
+# ------------------
+# 【履歴】
+# ------------------
+# ・2008.09.05  v1.1  修正
+# ・2008.12.05  v1.2  cp, copy 見直し cpnew, copynew 追加
+# ・2010.01.15  v1.21  cs 追加
+# ・2020.07.30  v1.3  Git bach用 UTF-8変換
+# ============================================================
+
+alias keshi='rm -i';
+alias keshigomu='rm -f';
+
+alias mv='mv -i';
+alias move='\mv';
+
+alias cp='\cp -ip';
+alias cpnew='\cp -i';
+alias copy='\cp -p';
+alias copynew='\cp';
+
+alias ls='ls -ACF --show-control-chars';
+alias ll='ls -l';
+alias l1='ls -1';
+alias lt='ls -lt';
+alias ltr='ls -ltr';
+
+alias lld='\ls -CFl | grep /';
+alias l1d='\ls -CF1 | grep /';
+alias ltd='\ls -CFlt | grep /';
+alias ltrd='\ls -CFltr | grep /';
+
+alias so='source';
+alias sorc='source ~/.bashrc; echo "source ~/.bashrc";';
+
+# ------------------------------------------------------------
+# ▼アプリケーション
+# ------------------------------------------------------------
+alias ee='~/bin/ee';
+alias gvim='~/app/vim82-kaoriya-win64/gvim.exe'
+

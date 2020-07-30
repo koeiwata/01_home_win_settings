@@ -1,0 +1,217 @@
+# ============================================================
+# ■bash シェル関数設定
+# %version / 1.3
+#
+# by Koei Watanabe
+# ------------------
+# 【履歴】
+# ------------------
+# ・2008.09.05  v1.1  修正
+# ・2020.07.30  v1.3  Git bach用 UTF-8変換
+# ============================================================
+
+# 変数
+stack_max=30;  # スタックの数
+
+# スタック用の配列を定義
+go_stack[0]="$PWD";  # カレントディレクトリ
+
+i=1;
+while [ $i -lt $stack_max ]
+do
+	go_stack[$i]="NULL";
+	i=$((i+1));
+done
+
+# ------------------------------------------------------------
+# ▼シェル関数
+# ------------------------------------------------------------
+
+# ■ディレクトリの移動(スタック)
+# @param / [$1:String] / ディレクトリ名
+# ------
+# @return / なし
+function cd()
+{
+	local i j;
+	local dname;  # ディレクトリ名
+	local cur_dir;  # カレントディレクトリ
+
+	if [ $# -gt 0 ]; then  # 引数があるとき
+		dname="$1";
+		builtin cd "$dname";
+		cur_dir="$PWD";
+	else
+		builtin cd;
+		cur_dir="$HOME";
+	fi
+
+	# カレントディレクトリと一致するものを[0]にもってくる(ソート)
+	i=0;
+	while [ $i -lt $((stack_max-1)) ]
+	do
+		j=$((stack_max-1));
+		while [ $j -gt $i ]
+		do
+			if [ "${go_stack[$j]}" == "$cur_dir" ]; then  # カレントディレクトリがスタックの中にあったとき
+				tmp="${go_stack[$j]}";
+				go_stack[$j]="${go_stack[$((j-1))]}";
+				go_stack[$((j-1))]="$tmp";
+			fi
+
+			j=$((j-1));
+		done
+
+		i=$((i+1));
+	done
+
+	# [0]がカレントディレクトリでないとき
+	if [ "${go_stack[0]}" != "$cur_dir" ]; then
+		i=$((stack_max-1));
+		while [ $i -gt 0 ]
+		do
+			go_stack[$i]="${go_stack[$((i-1))]}";
+			i=$((i-1));
+		done
+
+		go_stack[0]="$cur_dir";
+	fi
+
+	chkstk;  # チェックスタック(シェル関数)
+
+	return;
+}
+
+
+# ■チェックスタック
+# @param / なし
+# ------
+# @return / なし
+function chkstk()
+{
+	local i i_hit;
+
+	#	ディレクトリが存在するかチェック
+	# 存在しているスタックを前に詰める
+	i=0;
+	i_hit=0;
+	while [ $i -lt $stack_max ]
+	do
+		if [ -d "${go_stack[$i]}" ]; then
+			go_stack[$i_hit]="${go_stack[$i]}";
+			i_hit=$((i_hit+1));
+		fi
+
+		i=$((i+1));
+	done
+
+	# 存在していなかったものが入っていたスタックをクリア
+	i=$i_hit;
+	while [ $i -lt $stack_max ]
+	do
+		go_stack[$i]="NULL";
+		i=$((i+1));
+	done
+
+	return;
+}
+
+
+# ■スタックの表示
+# @param / なし
+# ------
+# @return / なし
+function showstk()
+{
+	local i;
+
+	i=$((stack_max-1));
+	while [ $i -ge 0 ]
+	do
+		if [ "${go_stack[$i]}" != "NULL" ]; then
+			echo "$i: ${go_stack[$i]}";
+		fi
+
+		i=$((i-1));
+	done
+
+	return;
+}
+
+
+# ■一つ前のディレクトリに戻る
+# @param / なし
+# ------
+# @return / なし
+function gb()
+{
+	if [ "${go_stack[1]}" != "NULL" ]; then
+		cd "${go_stack[1]}";
+	fi
+
+	return;
+}
+
+
+# ■任意のディレクトリへの移動(引数なしならスタック表示)
+# @param / [$1:Number] / スタックナンバー
+# ------
+# @return / なし
+function gt()
+{
+	local i;
+
+	if [ $# -gt 0 ]; then  # 引数があるとき
+		stack_num=$1;  # スタックナンバー
+	
+		if [ $stack_num -ge $stack_max ]; then
+			echo "スタックナンバー エラー";
+		else
+			if [ "${go_stack[$stack_num]}" == "NULL" ]; then
+				echo "スタックの中身がありません";
+			else
+				cd "${go_stack[$stack_num]}";
+			fi
+		fi
+
+	else  # 引数がないとき(スタック表示)
+		chkstk;  # チェックスタック(シェル関数)
+		showstk;  # スタックの表示(シェル関数)
+	fi
+
+	return;
+}
+
+
+# ■スタックの削除
+# @param / $1:Number / スタックナンバー
+# ------
+# @return / なし
+function delgt()
+{
+	local i;
+
+	if [ $# -gt 0 ]; then  # 引数があるとき
+		stack_num=$1;  # スタックナンバー
+	
+		if [ $stack_num -ge $stack_max ]; then  # MAX以上のとき
+			echo "スタックナンバー エラー";
+		elif [ $stack_num -eq 0 ]; then
+			echo "0 はカレントディレクトリです";
+		else
+			if [ "${go_stack[$stack_num]}" == "NULL" ]; then
+				echo "スタックの中身がありません";
+			else  # 削除
+				go_stack[$stack_num]="NULL";
+
+				chkstk;  # チェックスタック(シェル関数)
+				showstk;  # スタックの表示(シェル関数)
+			fi
+		fi
+
+	else  # 引数がないとき(スタック表示)
+		echo "引数がありません";
+	fi	
+
+	return;
+}
