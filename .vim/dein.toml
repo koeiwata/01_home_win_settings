@@ -90,8 +90,27 @@ hook_add = '''
 repo = 'preservim/nerdtree'
 hook_add = '''
   nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
+  " 引数なしでvimを開いたらNERDTreeを起動、
+  " 引数ありならNERDTreeは起動せず、引数で渡されたファイルを開く。
+  autocmd vimenter * if !argc() | NERDTree | endif
+
+  " 他のバッファをすべて閉じた時にNERDTreeが開いていたらNERDTreeも一緒に閉じる。
+  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+  " 隠しファイルをデフォルトで表示させる
+  let g:NERDTreeShowHidden = 1
+
+  " 以下のファイルは vim からは見たくない
+  let g:NERDTreeIgnore = ['\~$', '.pdf$', '.xlsx$', '.xd$', '.psd$', '.jpg$', '.gif$', '.png$', '.zip$', '.tar$', '.tz$', '.tgz$', '.exe$', '.o$', '.so$', '.lnk$', '^ntuser', '^NTUSER']
+
+  " Bookmarkをデフォルトで表示させる
+  let g:NERDTreeShowBookmarks=1
+
+  " NERDTreeでルートを変更したらchdirする
+  let g:NERDTreeChDirMode = 2
 '''
-# ファイルセレクタ
+# 多機能セレクタ
 [[plugins]]
 repo = 'kien/ctrlp.vim'
 
