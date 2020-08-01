@@ -15,7 +15,7 @@
 #export LANG=ja_JP.SJIS  # 言語ロケール
 export LANG=ja_JP.UTF-8  # 言語ロケール
 #export LESSCHARSET=dos  # less で日本語を表示
-export CDPATH='.:~:/Users/watanabe-koei/OneDrive/works/';  # カレント:ホーム:作業ディレクトリをディレクトリ検索パスに指定
+export CDPATH='.:~:~/works/';  # カレント:ホーム:作業ディレクトリをディレクトリ検索パスに指定
 
 # プロンプト設定
 if [ -f ~/.bash_prompt ]; then
