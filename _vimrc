@@ -59,6 +59,35 @@ if !has('gui_running') && &encoding != 'cp932' && &term == 'win32'
 endif
 
 "---------------------------------------------------------------------------
+" Kaoriya版に添付されているプラグインの無効化
+
+" 問題があるものもあるのを無効化します。
+" 必要なプラグインは
+" let plugin_..._disableの設定行をコメント化(削除)して有効にして下さい。
+" ※plugin_..._disableの値を0にしても有効にならない仕様なので注意してください。
+
+" $VIM/plugins/kaoriya/plugin/autodate.vim を無効化
+let plugin_autodate_disable  = 1
+
+" $VIM/plugins/kaoriya/plugin/cmdex.vim を無効化
+let plugin_cmdex_disable     = 1
+
+" $VIM/plugins/kaoriya/plugin/dicwin.vim を無効化
+let plugin_dicwin_disable    = 1
+
+" $VIMRUNTIME/plugin/plugin/format.vim を無効化
+let plugin_format_disable    = 1
+
+" $VIM/plugins/kaoriya/plugin/hz_ja.vim を無効化
+let plugin_hz_ja_disable     = 1
+
+" $VIM/plugins/kaoriya/plugin/scrnmode.vim を無効化
+let plugin_scrnmode_disable  = 1
+
+" $VIM/plugins/kaoriya/plugin/verifyenc.vim を無効化
+"let plugin_verifyenc_disable = 1
+
+"---------------------------------------------------------------------------
 " 基本設定:
 
 " バックアップファイルを作らない (nowritebackup:上書きする前の一時バックアップも作らない)
