@@ -4,4 +4,14 @@
 # Google翻訳
 [[plugins]]
 repo = 'skanehira/translate.vim'
+hook_add = '''
+  vnoremap <Leader>t :Translate<CR>
+  xnoremap <Leader>t :Translate<CR>
+  " 翻訳元言語
+  let g:translate_source = "en"
+  " 翻訳先言語
+  let g:translate_target = "ja"
+  " 翻訳結果ウィンドウのサイズ
+  let g:translate_winsize = 10
+'''
 
