@@ -41,4 +41,5 @@ alias sorc='source ~/.bashrc; echo "source ~/.bashrc";';
 # ------------------------------------------------------------
 alias ee='~/bin/ee'; # Windows Explorer
 alias gvim='~/app/vim82-kaoriya-win64/gvim.exe'
+alias python='winpty ~/app/Python/Python38-32/python.exe'
 
