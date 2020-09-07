@@ -135,7 +135,7 @@ set noerrorbells
 set visualbell
 
 " ヤンクでクリップボードにコピー
-set clipboard=unnamed,autoselect
+set clipboard=unnamed
 
 " すべての数を10進数として扱う
 set nrformats=
@@ -262,6 +262,19 @@ nnoremap k gk
 " Escの2回押しでハイライト消去
 nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
 
+" カーソル位置から行末までヤンク
+nnoremap Y y$
+
+" インクリメント・デクリメント
+nnoremap + <C-a>
+nnoremap - <C-x>
+
+" 削除でヤンクしない
+nnoremap d "_d
+nnoremap D "_D
+nnoremap x "_x
+nnoremap c "_c
+
 " 日本語入力がオンのままでも使えるコマンド（Enterキーは必要）
 nnoremap あ a
 nnoremap い i
@@ -303,6 +316,20 @@ inoremap ' ''<left>
 inoremap ` ``<left>
 inoremap < <><left>
 
+" ビジュアルモード
+" インデントの調整後にビジュアルモードを解除しない
+vnoremap < <gv
+vnoremap > >gv
+
+" 削除でヤンクしない
+vnoremap d "_d
+vnoremap D "_D
+vnoremap x "_x
+vnoremap c "_c
+
+" ビジュアルモードで連続してペースト
+vnoremap <silent> <C-p> "0p<CR>
+
 "---------------------------------------------------------------------------
 " マウスに関する設定:
 "
@@ -322,7 +349,7 @@ set nomousefocus
 set mousehide
 
 " ビジュアル選択(D&D他)を自動的にクリップボードへ (:help guioptions_a)
-set guioptions+=a
+"set guioptions+=a
 
 "---------------------------------------------------------------------------
 " dein.vim settings
