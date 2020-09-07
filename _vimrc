@@ -254,9 +254,45 @@ set hlsearch
 "---------------------------------------------------------------------------
 " キー設定:
 
+" ノーマルモード
 " 折り返し時に表示行単位での移動できるようにする
 nnoremap j gj
 nnoremap k gk
+
+" Escの2回押しでハイライト消去
+nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+
+" 日本語入力がオンのままでも使えるコマンド（Enterキーは必要）
+nnoremap あ a
+nnoremap い i
+nnoremap う u
+nnoremap お o
+nnoremap っd dd
+nnoremap っy yy
+nnoremap し[ ci[
+nnoremap し( ci(
+nnoremap し{ ci{
+nnoremap し” ci"
+nnoremap し’ ci'
+nnoremap し` ci`
+nnoremap しt cit
+
+" インサートモード
+" ESCの代替
+inoremap <silent> jj <ESC>
+inoremap <silent> っj <ESC>
+inoremap <silent> っｊ <ESC>
+
+" BSの代替
+inoremap <C-b> <BS>
+
+" カーソル移動
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
 
 " [ と打ったら [] と入力し、かっこの中にカーソルを移動する
 inoremap [ []<left>
@@ -264,10 +300,8 @@ inoremap ( ()<left>
 inoremap { {}<left>
 inoremap " ""<left>
 inoremap ' ''<left>
+inoremap ` ``<left>
 inoremap < <><left>
-
-" Escの2回押しでハイライト消去
-nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
 
 "---------------------------------------------------------------------------
 " マウスに関する設定:
