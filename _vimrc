@@ -180,7 +180,7 @@ set showmatch matchtime=1
 set cinoptions+=:0
 
 " 自動的にインデントする (noautoindent:インデントしない)
-" set autoindent
+set noautoindent
 
 " 改行時に入力された行の末尾に合わせて次の行のインデントを増減する (スマートインデント)
 set smartindent
@@ -233,6 +233,11 @@ set tabstop=2
 " シンタックスハイライトの有効化
 syntax enable
 
+" 画面スクロール
+set scroll=3
+set scrolljump=1
+set scrolloff=5
+
 "---------------------------------------------------------------------------
 " 検索の挙動に関する設定:
 
@@ -254,13 +259,15 @@ set hlsearch
 "---------------------------------------------------------------------------
 " キー設定:
 
-" ノーマルモード
+" ▼ノーマルモード
+
 " 折り返し時に表示行単位での移動できるようにする
 nnoremap j gj
 nnoremap k gk
 
-" Escの2回押しでハイライト消去
-nnoremap <Esc><Esc> :nohlsearch<CR><ESC>
+" ハイライト消去
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR><ESC>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " カーソル位置から行末までヤンク
 nnoremap Y y$
@@ -269,11 +276,15 @@ nnoremap Y y$
 nnoremap + <C-a>
 nnoremap - <C-x>
 
-" 削除でヤンクしない
-nnoremap d "_d
-nnoremap D "_D
+" 削除・変更でヤンクしない
+"nnoremap d "_d
+"nnoremap D "_D
 nnoremap x "_x
+nnoremap X "_X
 nnoremap c "_c
+nnoremap C "_C
+nnoremap s "_s
+nnoremap S "_S
 
 " 日本語入力がオンのままでも使えるコマンド（Enterキーは必要）
 nnoremap あ a
@@ -290,13 +301,36 @@ nnoremap し’ ci'
 nnoremap し` ci`
 nnoremap しt cit
 
-" インサートモード
-" ESCの代替
-inoremap <silent> jj <ESC>
-inoremap <silent> っj <ESC>
-inoremap <silent> っｊ <ESC>
+" カーソル下の単語をハイライトする
+nnoremap <silent> <Space><Space> "zyiw:let @/ = '\<' . @z . '\>'<CR>:set hlsearch<CR>
 
-" BSの代替
+" カーソル下の単語をハイライトしてから置換する
+nmap # <Space><Space>:%s/<C-r>///g<Left><Left>
+
+" 上下に空行を挿入する
+nnoremap <S-CR> mzo<ESC>`z
+nnoremap <C-S-CR> mzO<ESC>`z
+" CUIで入力された<S-CR>,<C-S-CR>が拾えないので
+" iTerm2のキー設定を利用して特定の文字入力をmapする
+"if !has('gui_running')
+"  map ✠ <S-CR>
+"  map ✢ <C-S-CR>
+"endif
+
+" 行を移動
+nnoremap <C-Up> "zdd<Up>"zP
+nnoremap <C-Down> "zdd"zp
+
+" ▼インサートモード
+
+" ESCの代替（右にESCする）
+inoremap <silent> jj <ESC><Right>
+inoremap <silent> っj <ESC><Right>
+inoremap <silent> っｊ <ESC><Right>
+inoremap <C-]> <Esc><Right>
+
+" Delete, Backspace
+inoremap <C-d> <Del>
 inoremap <C-b> <BS>
 
 " カーソル移動
@@ -316,19 +350,66 @@ inoremap ' ''<left>
 inoremap ` ``<left>
 inoremap < <><left>
 
-" ビジュアルモード
+" 上下に空行を挿入する
+imap <S-CR> <End><CR>
+imap <C-S-CR> <Up><End><CR>
+" CUIで入力された<S-CR>,<C-S-CR>が拾えないので
+" iTerm2のキー設定を利用して特定の文字入力をmapする
+"if !has('gui_running')
+"  imap ✠ <S-CR>
+"  imap ✢ <C-S-CR>
+"endif
+
+" Ctrl+tでタイポ修正
+" tehをtheに直したりできます。
+inoremap <C-t> <Esc><Left>"zx"zpa
+
+" ▼ビジュアルモード
+
 " インデントの調整後にビジュアルモードを解除しない
 vnoremap < <gv
 vnoremap > >gv
 
-" 削除でヤンクしない
-vnoremap d "_d
-vnoremap D "_D
+" 削除・変更でヤンクしない
+"vnoremap d "_d
+"vnoremap D "_D
 vnoremap x "_x
+vnoremap X "_X
 vnoremap c "_c
+vnoremap C "_C
+vnoremap s "_s
+vnoremap S "_S
 
 " ビジュアルモードで連続してペースト
-vnoremap <silent> <C-p> "0p<CR>
+xnoremap <expr> p 'pgv"'.v:register.'y`>'
+
+" ビジュアルモードでハイライト・置換
+xnoremap <silent> <Space> mz:call <SID>set_vsearch()<CR>:set hlsearch<CR>`z
+xnoremap * :<C-u>call <SID>set_vsearch()<CR>/<C-r>/<CR>
+xmap # <Space>:%s/<C-r>///g<Left><Left>
+
+function! s:set_vsearch()
+  silent normal gv"zy
+  let @/ = '\V' . substitute(escape(@z, '/\'), '\n', '\\n', 'g')
+endfunction
+
+" 複数行を移動
+vnoremap <C-Up> "zx<Up>"zP`[V`]
+vnoremap <C-Down> "zx"zp`[V`]
+
+" ▼コマンドラインモード
+
+" Delete, Backspace
+cnoremap <C-d> <Del>
+cnoremap <C-b> <BS>
+
+" カーソル移動
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 
 "---------------------------------------------------------------------------
 " マウスに関する設定:
