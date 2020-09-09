@@ -349,6 +349,11 @@ inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ` ``<left>
 inoremap < <><left>
+inoremap （ （）<left>
+inoremap 「 「」<left>
+inoremap 『 『』<left>
+inoremap 【 【】<left>
+inoremap ＜ ＜＞<left>
 
 " 上下に空行を挿入する
 imap <S-CR> <End><CR>
