@@ -330,6 +330,7 @@ nnoremap <C-Down> "zdd"zp
 inoremap <silent> jj <ESC><Right>
 inoremap <silent> っj <ESC><Right>
 inoremap <silent> っｊ <ESC><Right>
+inoremap <silent> ｊｊ <ESC><Right>
 inoremap <C-]> <Esc><Right>
 
 " Delete, Backspace
