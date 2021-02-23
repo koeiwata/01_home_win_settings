@@ -122,9 +122,6 @@ set virtualedit=block
 " 挿入モードでバックスペースで削除できるようにする
 set backspace=indent,eol,start
 
-" 全角文字専用の設定
-set ambiwidth=double
-
 " wildmenuオプションを有効 (vimバーからファイルを選択できる)
 set wildmenu
 
@@ -146,22 +143,25 @@ set whichwrap=b,s,h,l,<,>,[,],~
 " テキスト挿入中の自動折り返しを日本語に対応させる
 set formatoptions+=mM
 
+" Windowsでパスの区切り文字をスラッシュで扱う
+set shellslash
+
 "---------------------------------------------------------------------------
 " GUI固有ではない画面表示の設定:
 
 " タイトルを表示
 set title
 
-" 行番号を表示 (number:表示)
+" 行番号を表示
 set number
 
-" ルーラーを表示 (noruler:非表示)
+" ルーラーを表示
 set ruler
 
-" 長い行を折り返して表示 (nowrap:折り返さない)
+" 長い行を折り返して表示
 set wrap
 
-" 現在の行を強調表示
+" カーソル行を強調表示
 set cursorline
 
 " 現在の列を強調表示
@@ -170,16 +170,13 @@ set cursorline
 " 行末の1文字先までカーソルを移動できるように
 set virtualedit=onemore
 
-" Windowsでパスの区切り文字をスラッシュで扱う
-set shellslash
-
 " 対応する括弧やブレースを表示
 set showmatch matchtime=1
 
 " インデント方法の変更
 set cinoptions+=:0
 
-" 自動的にインデントする (noautoindent:インデントしない)
+" 自動的にインデントしない
 set noautoindent
 
 " 改行時に入力された行の末尾に合わせて次の行のインデントを増減する (スマートインデント)
@@ -261,6 +258,52 @@ set hlsearch
 
 " ▼ノーマルモード
 
+" 保存・終了
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap <Space>ww :<C-u>w<CR>
+nnoremap <Space>qq :<C-u>q<CR>
+
+" EXモード"
+nnoremap Q <Nop>
+
+" ウィンドウ操作
+nnoremap <Space>ws :<C-u>sp<CR>
+nnoremap <Space>wv :<C-u>vs<CR>
+nnoremap <Space>wj <C-w>j
+nnoremap <Space>wk <C-w>k
+nnoremap <Space>wh <C-w>h
+nnoremap <Space>wl <C-w>l
+nnoremap <Space>wJ <C-w>J
+nnoremap <Space>wK <C-w>K
+nnoremap <Space>wL <C-w>L
+nnoremap <Space>wH <C-w>H
+nnoremap <Space>w> <C-w>>
+nnoremap <Space>w< <C-w><
+nnoremap <Space>w+ <C-w>+
+nnoremap <Space>w- <C-w>-
+
+" バッファ操作
+nnoremap <Space>ls :<C-u>ls<CR>
+
+" タブ操作
+nnoremap <Space>tt :<C-u>tabnew<CR>
+nnoremap <Space>tn gt
+nnoremap <Space>tp gT
+
+" 画面移動"
+nnoremap <Space>zz zz
+
+" カーソル移動
+nnoremap <Space>j 10j
+nnoremap <Space>k 10k
+nnoremap <Space>h 10h
+nnoremap <Space>l 10l
+nnoremap <Space>jj 100j
+nnoremap <Space>kk 100k
+nnoremap <Space>hh 0
+nnoremap <Space>ll $
+
 " ノーマルモードでも改行はできるようにする
 nnoremap <CR> o<ESC>
 
@@ -313,16 +356,14 @@ nmap # <Space><Space>:%s/<C-r>///g<Left><Left>
 " 上下に空行を挿入する
 nnoremap <S-CR> mzo<ESC>`z
 nnoremap <C-S-CR> mzO<ESC>`z
-" CUIで入力された<S-CR>,<C-S-CR>が拾えないので
-" iTerm2のキー設定を利用して特定の文字入力をmapする
-"if !has('gui_running')
-"  map ✠ <S-CR>
-"  map ✢ <C-S-CR>
-"endif
 
 " 行を移動
 nnoremap <C-Up> "zdd<Up>"zP
 nnoremap <C-Down> "zdd"zp
+
+" タイポ修正
+" teh の e で t を押して the に直す
+nnoremap t xp
 
 " ▼インサートモード
 
@@ -359,21 +400,42 @@ inoremap 『 『』<left>
 inoremap 【 【】<left>
 inoremap ＜ ＜＞<left>
 
+" _[ と打ったら 1つだけ [ を入力する
+inoremap _[ [<left>
+inoremap _( (<left>
+inoremap _{ {<left>
+inoremap _" "<left>
+inoremap _' '<left>
+inoremap _` `<left>
+inoremap _< <<left>
+inoremap ＿（ （<left>
+inoremap ＿「 「<left>
+inoremap ＿『 『<left>
+inoremap ＿【 【<left>
+inoremap ＿＜ ＜<left>
+
 " 上下に空行を挿入する
 imap <S-CR> <End><CR>
 imap <C-S-CR> <Up><End><CR>
-" CUIで入力された<S-CR>,<C-S-CR>が拾えないので
-" iTerm2のキー設定を利用して特定の文字入力をmapする
-"if !has('gui_running')
-"  imap ✠ <S-CR>
-"  imap ✢ <C-S-CR>
-"endif
 
-" Ctrl+tでタイポ修正
-" tehをtheに直したりできます。
+" タイポ修正
+" teh まで打ったあと the に直す
 inoremap <C-t> <Esc><Left>"zx"zpa
 
 " ▼ビジュアルモード
+
+" ESCの代替（右にESCする）
+vnoremap <C-]> <Esc><Right>
+
+" カーソル移動
+vnoremap <Space>j 10j
+vnoremap <Space>k 10k
+vnoremap <Space>h 10h
+vnoremap <Space>l 10l
+vnoremap <Space>jj 100j
+vnoremap <Space>kk 100k
+vnoremap <Space>hh 0
+vnoremap <Space>ll $
 
 " インデントの調整後にビジュアルモードを解除しない
 vnoremap < <gv
