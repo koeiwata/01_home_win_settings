@@ -1,5 +1,5 @@
 " ＠＠
-" .gvimrc
+" _gvimrc
 "---------------------------------------------------------------------------
 scriptencoding utf-8
 
@@ -35,34 +35,4 @@ set background=dark
 "set guifont=Ricty_Diminished_for_Powerline:h12
 "set guifont=Cascadia_Code_PL:h12
 set guifont=Cica:h12
-
-"---------------------------------------------------------------------------
-" ターミナル設定:
-
-function! GitBash()
-  " 日本語Windowsの場合`ja`が設定されるので、入力ロケールに合わせたUTF-8に設定しなおす
-  let l:env = {
-    \ 'LANG': systemlist('"C:/Users/watanabe-koei/app/Git/usr/bin/locale.exe" -iU')[0],
-    \ }
-
-  " remote連携のための設定
-  if has('clientserver')
-    call extend(l:env, {
-      \ 'GVIM': $VIMRUNTIME,
-      \ 'VIM_SERVERNAME': v:servername,
-      \ })
-  endif
-
-  " term_startでgit for windowsのbashを実行する
-  call term_start(['C:/Users/watanabe-koei/app/Git/bin/bash.exe', '-l'], {
-    \ 'term_name': 'Git',
-    \ 'term_finish': 'close',
-    \ 'curwin': v:true,
-    \ 'cwd': $USERPROFILE,
-    \ 'env': l:env,
-    \ })
-
-endfunction
-
-nnoremap <Leader>g :<C-u>call GitBash()<CR>
 

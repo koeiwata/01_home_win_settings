@@ -1,12 +1,12 @@
 " ＠＠
-" .vimrc
+" _vimrc
 "---------------------------------------------------------------------------
-scriptencoding utf-8
 
 "---------------------------------------------------------------------------
 " 文字コード・改行コード設定:
 
 " 文字コードをUFT-8に設定
+scriptencoding utf-8
 set encoding=utf-8
 set termencoding=utf-8
 set fileencodings=utf-8,cp932,euc-jp,sjis
@@ -68,7 +68,7 @@ if has('multi_byte_ime') || has('xim')
   " (8.0.1114 でデフォルトになったが念のため残してある)
   "set iminsert=0 imsearch=0
   " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
-  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+  "inoremap <silent><ESC> <ESC>:set iminsert=0<CR>
 endif
 
 "---------------------------------------------------------------------------
@@ -99,6 +99,255 @@ let plugin_scrnmode_disable  = 1
 
 " $VIM/plugins/kaoriya/plugin/verifyenc.vim を無効化
 "let plugin_verifyenc_disable = 1
+
+
+" ------------------------------------------------------------------------------
+" キーバインド
+
+let mapleader = "\<Space>"
+
+" ----------------------------------------
+" ▼ノーマルモード
+
+" 保存・終了
+nnoremap ZZ <Nop>
+nnoremap ZQ <Nop>
+nnoremap <Leader>ww :<C-u>w<CR>
+nnoremap <Leader>wq :<C-u>q<CR>
+nnoremap <Leader>mq :<C-u>q<CR>
+
+" EXモード"
+nnoremap Q <Nop>
+
+" バッファ操作
+nnoremap <Leader>mb :<C-u>ls<CR>
+nnoremap <Leader>mn :<C-u>bn<CR>
+nnoremap <Leader>mp :<C-u>bp<CR>
+nnoremap <Leader>md :<C-u>bd<CR>
+
+" ウィンドウ操作
+nnoremap <Leader>ms :<C-u>sp<CR><C-w>j
+nnoremap <Leader>mv :<C-u>vs<CR><C-w>l
+nnoremap <Leader>mj <C-w>j
+nnoremap <Leader>mk <C-w>k
+nnoremap <Leader>mh <C-w>h
+nnoremap <Leader>ml <C-w>l
+nnoremap <Leader>mJ <C-w>J
+nnoremap <Leader>mK <C-w>K
+nnoremap <Leader>mL <C-w>L
+nnoremap <Leader>mH <C-w>H
+nnoremap <Leader>m<Right> <C-w>>
+nnoremap <Leader>m<Left> <C-w><
+nnoremap <Leader>m<Up> <C-w>+
+nnoremap <Leader>m<Down> <C-w>-
+
+" 画面スクロール
+noremap <Leader>mG zz
+nnoremap <Leader>mT zt
+nnoremap <Leader>mB zb
+
+" タブ操作
+nnoremap <Leader>Tt :<C-u>tabnew<CR>
+nnoremap <Leader>Tn gt
+nnoremap <Leader>Tp gT
+
+" カーソル移動のShiftボタンを無効にする
+nnoremap J <Nop>
+nnoremap K <Nop>
+nnoremap H <Nop>
+nnoremap L <Nop>
+
+" カーソル移動
+nnoremap <Leader>j 10j
+nnoremap <Leader>k 10k
+nnoremap <Leader>h 10h
+nnoremap <Leader>l 10l
+nnoremap <Leader>a ^
+nnoremap <Leader>e $
+nnoremap <Leader>g M
+nnoremap <Leader>t H
+nnoremap <Leader>b L
+
+" タイポ修正
+" teh の e で t を押して the に直す
+nnoremap t xp
+
+" インクリメント・デクリメント
+nnoremap + <C-a>
+nnoremap - <C-x>
+
+" 空行追加（ノーマルモードでも改行はできるようにする）
+nnoremap <CR> o<ESC>
+nnoremap <Leader><CR> O<ESC>
+
+" 行連結
+nnoremap <Leader>+ J
+
+" 行分割
+
+nnoremap <Leader>; i<CR><ESC>
+
+" 折り返し時に表示行単位での移動できるようにする
+nnoremap j gj
+nnoremap k gk
+
+" カーソル位置から行末までヤンク
+nnoremap Y y$
+
+" 削除・変更でヤンクしない
+"nnoremap d "_d
+"nnoremap D "_D
+nnoremap x "_x
+nnoremap X "_X
+nnoremap c "_c
+nnoremap C "_C
+nnoremap s "_s
+nnoremap S "_S
+
+" 日本語入力がオンのままでも使えるコマンド（Enterキーは必要）
+nnoremap あ a
+nnoremap い i
+nnoremap う u
+nnoremap お o
+nnoremap っd dd
+nnoremap っy yy
+nnoremap し[ ci[
+nnoremap し( ci(
+nnoremap し{ ci{
+nnoremap し” ci"
+nnoremap し’ ci'
+nnoremap し` ci`
+nnoremap しt cit
+
+" カーソル下の単語をハイライトする
+nnoremap <silent><Leader>* "zyiw:let @/ = '\<' . @z . '\>'<CR>:set hlsearch<CR>
+
+" カーソル下の単語をハイライトしてから置換する
+nmap # <Leader>*:%s/<C-r>///gc<Left><Left><Left>
+
+" ハイライト消去
+nnoremap <silent><Esc><Esc> :nohlsearch<CR><ESC>
+nnoremap <silent><C-l> :<C-u>nohlsearch<CR><C-l>
+
+" ----------------------------------------
+" ▼インサートモード
+
+" ノーマルモードに戻る（ESCの代替）
+inoremap <silent>jj <ESC><Right>
+inoremap <silent>っj <ESC><Right>
+inoremap <silent>っｊ <ESC><Right>
+inoremap <silent>ｊｊ <ESC><Right>
+
+" Undoしてノーマルモードに戻る
+inoremap <silent>uuuu <ESC>u<Right>
+inoremap <silent>うううう <ESC>u<Right>
+
+" カーソル移動
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+
+" Backspace
+inoremap <C-d> <BS>
+
+" タイポ修正
+" teh まで打ったあと the に直す
+inoremap <C-t> <Esc><Left>"zx"zpa
+
+" [ と打ったら [] と入力し、かっこの中にカーソルを移動する
+inoremap [ []<left>
+inoremap ( ()<left>
+inoremap { {}<left>
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ` ``<left>
+inoremap < <><left>
+inoremap （ （）<left>
+inoremap 「 「」<left>
+inoremap 『 『』<left>
+inoremap 【 【】<left>
+inoremap ＜ ＜＞<left>
+
+" [! と打ったら 1つだけ [ を入力する
+inoremap [! [
+inoremap (! (
+inoremap {! {
+inoremap "! "
+inoremap '! '
+inoremap `! `
+inoremap <! <
+inoremap （！ （
+inoremap 「！ 「
+inoremap 『！ 『
+inoremap 【！ 【
+inoremap ＜！ ＜
+
+" ----------------------------------------
+" ▼ビジュアルモード
+
+" ESCの代替（右にESCする）
+vnoremap <C-]> <Esc><Right>
+
+" カーソル移動
+vnoremap <Leader>j 10j
+vnoremap <Leader>k 10k
+vnoremap <Leader>h 10h
+vnoremap <Leader>l 10l
+vnoremap <Leader>a ^
+vnoremap <Leader>e $
+vnoremap <Leader>g M
+vnoremap <Leader>t H
+vnoremap <Leader>b L
+
+" インデントの調整後にビジュアルモードを解除しない
+vnoremap < <gv
+vnoremap > >gv
+
+" 削除・変更でヤンクしない
+"vnoremap d "_d
+"vnoremap D "_D
+vnoremap x "_x
+vnoremap X "_X
+"vnoremap c "_c
+"vnoremap C "_C
+vnoremap s "_s
+vnoremap S "_S
+
+" インクリメント・デクリメント
+vnoremap + <C-a>gv
+vnoremap - <C-x>gv
+
+" ビジュアルモードで連続してペースト
+xnoremap <expr> p 'pgv"'.v:register.'y`>'
+
+" ビジュアルモードでハイライト・置換
+xnoremap <silent><Leader> mz:call <SID>set_vsearch()<CR>:set hlsearch<CR>`z
+xnoremap * :<C-u>call <SID>set_vsearch()<CR>/<C-r>/<CR>
+xmap # <Leader>*:%s/<C-r>///gc<Left><Left><Left>
+
+function! s:set_vsearch()
+  silent normal gv"zy
+  let @/ = '\V' . substitute(escape(@z, '/\'), '\n', '\\n', 'g')
+endfunction
+
+" ----------------------------------------
+" ▼コマンドラインモード
+
+" Delete, Backspace
+cnoremap <C-d> <Del>
+cnoremap <C-b> <BS>
+
+" カーソル移動
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+
 
 "---------------------------------------------------------------------------
 " 基本設定:
@@ -252,274 +501,6 @@ set wrapscan
 
 " 検索語をハイライト表示
 set hlsearch
-
-"---------------------------------------------------------------------------
-" キー設定:
-
-" ▼ノーマルモード
-
-" 保存・終了
-nnoremap ZZ <Nop>
-nnoremap ZQ <Nop>
-nnoremap <Space>ww :<C-u>w<CR>
-nnoremap <Space>vq :<C-u>q<CR>
-
-" EXモード"
-nnoremap Q <Nop>
-
-" ウィンドウ操作
-nnoremap <Space>vs :<C-u>sp<CR><C-w>j
-nnoremap <Space>vv :<C-u>vs<CR><C-w>l
-nnoremap <Space>vj <C-w>j
-nnoremap <Space>vk <C-w>k
-nnoremap <Space>vh <C-w>h
-nnoremap <Space>vl <C-w>l
-nnoremap <Space>vJ <C-w>J
-nnoremap <Space>vK <C-w>K
-nnoremap <Space>vL <C-w>L
-nnoremap <Space>vH <C-w>H
-nnoremap <Space>v> <C-w>>
-nnoremap <Space>v< <C-w><
-nnoremap <Space>v+ <C-w>+
-nnoremap <Space>v- <C-w>-
-nnoremap <Space>v. <C-w>>
-nnoremap <Space>vn <C-w><
-nnoremap <Space>vm <C-w>+
-nnoremap <Space>v, <C-w>-
-
-" バッファ操作
-nnoremap <Space>bl :<C-u>ls<CR>
-nnoremap <Space>bn :<C-u>bn<CR>
-nnoremap <Space>bp :<C-u>bp<CR>
-nnoremap <Space>bd :<C-u>bd<CR>
-
-" タブ操作
-nnoremap <Space>tt :<C-u>tabnew<CR>
-nnoremap <Space>tn gt
-nnoremap <Space>tp gT
-
-" カーソル移動
-nnoremap <Space>mm M
-nnoremap <Space>mj L
-nnoremap <Space>mk H
-nnoremap <Space>mh 0
-nnoremap <Space>ml $
-nnoremap <Space>j 10j
-nnoremap <Space>k 10k
-nnoremap <Space>h 10h
-nnoremap <Space>l 10l
-nnoremap <Space>jj 50j
-nnoremap <Space>kk 50k
-nnoremap <Space>hh 50h
-nnoremap <Space>ll 50l
-nnoremap <Space>jjj 80j
-nnoremap <Space>kkk 80k
-nnoremap <Space>hhh 80h
-nnoremap <Space>lll 80l
-nnoremap <Space>J 100j
-nnoremap <Space>K 100k
-nnoremap <Space>H 100h
-nnoremap <Space>L 100l
-
-" 画面スクロール
-nnoremap <Space>vg zz
-nnoremap <Space>vt zt
-nnoremap <Space>vb zb
-
-" カーソル移動のShiftボタンを無効にする
-nnoremap J <Nop>
-nnoremap K <Nop>
-nnoremap H <Nop>
-nnoremap L <Nop>
-
-" 空行追加（ノーマルモードでも改行はできるようにする）
-nnoremap <CR> o<ESC>
-nnoremap <Space><CR> O<ESC>
-
-" 行連結
-nnoremap <Space>+ J
-
-" 行分割
-nnoremap <Space>; i<CR><ESC>
-
-" 折り返し時に表示行単位での移動できるようにする
-nnoremap j gj
-nnoremap k gk
-
-" ハイライト消去
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR><ESC>
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
-
-" カーソル位置から行末までヤンク
-nnoremap Y y$
-
-" 削除・変更でヤンクしない
-"nnoremap d "_d
-"nnoremap D "_D
-nnoremap x "_x
-nnoremap X "_X
-nnoremap c "_c
-nnoremap C "_C
-nnoremap s "_s
-nnoremap S "_S
-
-" 日本語入力がオンのままでも使えるコマンド（Enterキーは必要）
-nnoremap あ a
-nnoremap い i
-nnoremap う u
-nnoremap お o
-nnoremap っd dd
-nnoremap っy yy
-nnoremap し[ ci[
-nnoremap し( ci(
-nnoremap し{ ci{
-nnoremap し” ci"
-nnoremap し’ ci'
-nnoremap し` ci`
-nnoremap しt cit
-
-" カーソル下の単語をハイライトする
-nnoremap <silent> <Space><Space> "zyiw:let @/ = '\<' . @z . '\>'<CR>:set hlsearch<CR>
-
-" カーソル下の単語をハイライトしてから置換する
-nmap # <Space><Space>:%s/<C-r>///g<Left><Left>
-
-" タイポ修正
-" teh の e で <Space>t を押して the に直す
-nnoremap <Space>t xp
-
-" インクリメント・デクリメント
-nnoremap + <C-a>
-nnoremap - <C-x>
-
-" ▼インサートモード
-
-" ノーマルモードに戻る（ESCの代替）
-inoremap <silent> jj <ESC><Right>
-inoremap <silent> っj <ESC><Right>
-inoremap <silent> っｊ <ESC><Right>
-inoremap <silent> ｊｊ <ESC><Right>
-
-" アンドゥしてノーマルモードに戻る
-inoremap <silent> uuuu <ESC>u<Right>
-inoremap <silent> うううう <ESC>u<Right>
-
-" Delete, Backspace
-inoremap <C-d> <Del>
-inoremap <C-b> <BS>
-
-" カーソル移動
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
-inoremap <C-a> <Home>
-inoremap <C-e> <End>
-
-" [ と打ったら [] と入力し、かっこの中にカーソルを移動する
-inoremap [ []<left>
-inoremap ( ()<left>
-inoremap { {}<left>
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ` ``<left>
-inoremap < <><left>
-inoremap （ （）<left>
-inoremap 「 「」<left>
-inoremap 『 『』<left>
-inoremap 【 【】<left>
-inoremap ＜ ＜＞<left>
-
-" [! と打ったら 1つだけ [ を入力する
-inoremap [! [
-inoremap (! (
-inoremap {! {
-inoremap "! "
-inoremap '! '
-inoremap `! `
-inoremap <! <
-inoremap （！ （
-inoremap 「！ 「
-inoremap 『！ 『
-inoremap 【！ 【
-inoremap ＜！ ＜
-
-" タイポ修正
-" teh まで打ったあと the に直す
-inoremap <C-t> <Esc><Left>"zx"zpa
-
-" ▼ビジュアルモード
-
-" ESCの代替（右にESCする）
-vnoremap <C-]> <Esc><Right>
-
-" カーソル移動
-vnoremap <Space>mm M
-vnoremap <Space>mj L
-vnoremap <Space>mk H
-vnoremap <Space>mh 0
-vnoremap <Space>ml $
-vnoremap <Space>j 10j
-vnoremap <Space>k 10k
-vnoremap <Space>h 10h
-vnoremap <Space>l 10l
-vnoremap <Space>jj 50j
-vnoremap <Space>kk 50k
-vnoremap <Space>hh 50h
-vnoremap <Space>ll 50l
-vnoremap <Space>jjj 80j
-vnoremap <Space>kkk 80k
-vnoremap <Space>hhh 80h
-vnoremap <Space>lll 80l
-vnoremap <Space>J 100j
-vnoremap <Space>K 100k
-vnoremap <Space>H 100h
-vnoremap <Space>L 100l
-
-" インデントの調整後にビジュアルモードを解除しない
-vnoremap < <gv
-vnoremap > >gv
-
-" 削除・変更でヤンクしない
-"vnoremap d "_d
-"vnoremap D "_D
-vnoremap x "_x
-vnoremap X "_X
-vnoremap c "_c
-vnoremap C "_C
-vnoremap s "_s
-vnoremap S "_S
-
-" インクリメント・デクリメント
-vnoremap + <C-a>gv
-vnoremap - <C-x>gv
-
-" ビジュアルモードで連続してペースト
-xnoremap <expr> p 'pgv"'.v:register.'y`>'
-
-" ビジュアルモードでハイライト・置換
-xnoremap <silent> <Space> mz:call <SID>set_vsearch()<CR>:set hlsearch<CR>`z
-xnoremap * :<C-u>call <SID>set_vsearch()<CR>/<C-r>/<CR>
-xmap # <Space>:%s/<C-r>///g<Left><Left>
-
-function! s:set_vsearch()
-  silent normal gv"zy
-  let @/ = '\V' . substitute(escape(@z, '/\'), '\n', '\\n', 'g')
-endfunction
-
-" ▼コマンドラインモード
-
-" Delete, Backspace
-cnoremap <C-d> <Del>
-cnoremap <C-b> <BS>
-
-" カーソル移動
-cnoremap <C-j> <Down>
-cnoremap <C-k> <Up>
-cnoremap <C-h> <Left>
-cnoremap <C-l> <Right>
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
 
 "---------------------------------------------------------------------------
 " マウスに関する設定:

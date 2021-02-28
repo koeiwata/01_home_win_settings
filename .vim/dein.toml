@@ -110,9 +110,6 @@ hook_add = '''
   " NERDTreeでルートを変更したらchdirする
   let g:NERDTreeChDirMode = 2
 '''
-# 多機能セレクタ
-[[plugins]]
-repo = 'kien/ctrlp.vim'
 
 # NERDTreeやCtrlPにDevIconsを適用
 [[plugins]]
