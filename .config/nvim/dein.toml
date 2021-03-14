@@ -8,23 +8,15 @@ repo = 'ryanoasis/vim-devicons'
 
 # カラースキーマ
 [[plugins]]
-repo = 'joshdick/onedark.vim'
+repo = 'cocopon/iceberg.vim'
 
 hook_add = '''
-" colorscheme 設定は source 後に行う必要があるので VimEnter で行う。
-" 但し Colorscheme イベントの発生が抑制されないよう nented を付ける。
-autocmd VimEnter * ++nested colorscheme onedark
-set background=dark
+autocmd VimEnter * ++nested colorscheme iceberg
 syntax on
 '''
 
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
-
-hook_add = '''
-"let g:airline_theme = 'dark'
-"let g:airline_theme = 'powerlineish'
-'''
 
 # 補完
 repo = 'Shougo/deoplete.nvim'
