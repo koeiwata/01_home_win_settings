@@ -9,6 +9,8 @@
 # ・2008.09.05  v1.1  修正
 # ・2008.12.05  v1.2  cp, copy 見直し cpnew, copynew 追加
 # ・2020.07.30  v1.3  Git bach用 UTF-8変換
+# ・2020.08.06  v1.31  brew, pythonの設定 追加
+# ・2021.03.14  v1.32  neovimの設定 追加
 # ============================================================
 
 alias keshi='rm -i';
@@ -22,7 +24,8 @@ alias cpnew='\cp -i';
 alias copy='\cp -p';
 alias copynew='\cp';
 
-alias ls='ls -ACF --show-control-chars';
+#alias ls='ls -ACF --show-control-chars';
+alias ls='ls -ACF';
 alias ll='ls -l';
 alias l1='ls -1';
 alias lt='ls -lt';
@@ -39,7 +42,25 @@ alias sorc='source ~/.bashrc; echo "source ~/.bashrc";';
 # ------------------------------------------------------------
 # ▼アプリケーション
 # ------------------------------------------------------------
-alias ee='~/bin/ee'; # Windows Explorer
-alias gvim='~/app/vim82-kaoriya-win64/gvim.exe';
-alias python='winpty ~/app/Python/Python38-32/python.exe';
+#alias ee='~/bin/ee'; # Windows Explorer
+
+# neovim
+alias vi='/usr/local/bin/nvim';
+
+# brew
+alias brew="env PATH=${PATH/\/usr\/local\/var\/pyenv\/shims:/} brew";
+
+# python
+export PYENV_ROOT=/usr/local/var/pyenv;
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# tcl-tk
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH";
+export LDFLAGS="-L/usr/local/opt/tcl-tk/lib";
+export CPPFLAGS="-I/usr/local/opt/tcl-tk/include";
+export PKG_CONFIG_PATH="/usr/local/opt/tcl-tk/lib/pkgconfig";
+export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I/usr/local/opt/tcl-tk/include' --with-tcltk-libs='-L/usr/local/opt/tcl-tk/lib -ltcl8.6 -ltk8.6'";
+
+# node.js
+export PATH=$HOME/.nodebrew/current/bin:$PATH;
 

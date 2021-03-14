@@ -22,7 +22,7 @@ syntax on
 repo = 'vim-airline/vim-airline-themes'
 
 hook_add = '''
-let g:airline_theme = 'dark'
+"let g:airline_theme = 'dark'
 "let g:airline_theme = 'powerlineish'
 '''
 
@@ -135,5 +135,25 @@ autocmd FileType defx call s:defx_my_settings()
     nnoremap <silent><buffer><expr> <C-g> defx#do_action('print')
     nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
   endfunction
+'''
+
+# コメントアウト
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+# ターミナル
+[[plugins]]
+repo = 'kassio/neoterm'
+hook_add = '''
+let g:neoterm_default_mod='belowright'
+let g:neoterm_size=10
+let g:neoterm_autoscroll=1
+let g:neoterm_autoinsert=1
+
+nnoremap <silent><Leader>t :<C-u>Tnew<CR>
+vnoremap <silent><Leader>t V:TREPLSendSelection<CR>'>j0
+
+tnoremap <silent><ESC> <C-\><C-n><C-w>
+tnoremap <silent><C-[> <C-\><C-n><C-w>
 '''
 
