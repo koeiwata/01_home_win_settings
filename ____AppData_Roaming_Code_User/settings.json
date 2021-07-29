@@ -1,15 +1,37 @@
 {
-    "workbench.colorTheme": "Default High Contrast",
+    // ------------------------------------------------------------------------------
+    // 基本設定
+    
+    // 右端で折り返す
+    "editor.wordWrap": "on",
+
+
+    // ------------------------------------------------------------------------------
+    // vim 基本設定
+    
+    // クリップボードを使用
+    "vim.useSystemClipboard": true,
+
+    // ------------------------------------------------------------------------------
+    // 検索の挙動に関する設定
+
+    // 検索語をハイライト表示
+    "vim.hlsearch": true,
+
+    
+    // ------------------------------------------------------------------------------
+    // キーバインド
+
+    // リーダーキー
     "vim.leader": "<space>",
-    "vim.insertModeKeyBindings": [
-      {
-          "before": ["leader", "j", "k"],
-          "after": ["<Esc>"]
-      }
-    ],
-    "vim.otherModesKeyBindings": [
+ 
+    // ----------------------------------------
+    // ▼ノーマルモード
+    "vim.normalModeKeyBindingsNonRecursive": [
+       
+        // 保存 終了
         {
-            "before": ["leader","w"],
+            "before": ["leader","w", "w"],
             "after": [],
             "commands": [
                 {
@@ -17,8 +39,138 @@
                     "args": []
                 }
             ]
-        }
+        },
+
+        // カーソル移動
+        {
+          "before": ["leader", "a"],
+          "after": ["^"]
+        },
+        {
+          "before": ["leader", "e"],
+          "after": ["$"]
+        },
+
+        // 折り返し時に表示行単位での移動できるようにする
+        {
+          "before": ["j"],
+          "after": ["g", "j"]
+        },
+        {
+          "before": ["k"],
+          "after": ["g", "k"]
+        },
+
+        // カーソル位置から行末までヤンク
+        {
+          "before": ["Y"],
+          "after": ["y", "$"]
+        },
+
+        // 削除・変更でヤンクしない
+        {
+          "before": ["x"],
+          "after": ["\"", "_", "x"]
+        },
+        {
+          "before": ["X"],
+          "after": ["\"", "_", "X"]
+        },
+        {
+          "before": ["s"],
+          "after": ["\"", "_", "s"]
+        },
+        {
+          "before": ["S"],
+          "after": ["\"", "_", "S"]
+        },
+
+        // 空行追加（ノーマルモードでも改行はできるようにする）
+        {
+          "before": ["<CR>"],
+          "after": ["o", "<Esc>"]
+        },
+        {
+          "before": ["leader", "<CR>"],
+          "after": ["O", "<Esc>"]
+        },
+
+        // 行分割
+        {
+          "before": ["leader", ";"],
+          "after": ["i", "<CR>", "<Esc>"]
+        },
+
+        // タイポ修正
+        // teh の e で t を押して the に直す
+        {
+          "before": ["t"],
+          "after": ["x", "p"]
+        },
+
+        // インクリメント・デクリメント
+        {
+          "before": ["+"],
+          "after": ["<C-a>"]
+        },
+        {
+          "before": ["-"],
+          "after": ["<C-x>"]
+        },
+
     ],
-    "vim.hlsearch": true,
-    "vim.useSystemClipboard": true
+
+    // ----------------------------------------
+    // ▼インサートモード
+    "vim.insertModeKeyBindings": [
+
+        // ESCの代替
+        {
+          "before": ["l", "k", "j"],
+          "after": ["<Esc>"]
+        },
+        {
+          "before": ["L", "K", "J"],
+          "after": ["<Esc>"]
+        },
+        {
+          "before": ["ｌ", "ｋ", "ｊ"],
+          "after": ["<Esc>"]
+        },
+        {
+          "before": ["Ｌ", "Ｋ", "Ｊ"],
+          "after": ["<Esc>"]
+        },
+
+        // Backspace 
+        {
+          "before": ["<C-d>"],
+          "after": ["<BS>"]
+        },
+
+    ],
+
+
+    // ------------------------------------------------------------------------------
+    // カラー設定
+
+    // 画面テーマ
+    "workbench.colorTheme": "Default High Contrast",
+
+    // ステータスバー 
+    "vim.statusBarColorControl": true,
+    "vim.statusBarColors" : {
+        "normal": "#009987",
+        "insert": "#E0A505",
+        "visual": "#E00A20",
+        "visualline": "#DB00AE",
+        "visualblock": "#700094",
+        "replace": "#000000"
+    },
+    "workbench.colorCustomizations": {
+      "statusBar.background": "#009987",
+      "statusBar.noFolderBackground": "#009987",
+      "statusBar.debuggingBackground": "#009987"
+    }
+
 }
