@@ -8,32 +8,23 @@ repo = 'ryanoasis/vim-devicons'
 
 # カラースキーマ
 [[plugins]]
-repo = 'joshdick/onedark.vim'
+repo = 'cocopon/iceberg.vim'
 
 hook_add = '''
-" colorscheme 設定は source 後に行う必要があるので VimEnter で行う。
-" 但し Colorscheme イベントの発生が抑制されないよう nented を付ける。
-autocmd VimEnter * ++nested colorscheme onedark
-set background=dark
+"autocmd VimEnter * ++nested colorscheme iceberg
+colorscheme iceberg
 syntax on
 '''
 
+# ステータスライン
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
+depends = 'vim-airline'
 
 hook_add = '''
-"let g:airline_theme = 'dark'
-"let g:airline_theme = 'powerlineish'
+let g:airline_theme = 'powerlineish'
 '''
 
-# 補完
-repo = 'Shougo/deoplete.nvim'
-
-hook_add = '''
-let g:deoplete#enable_at_startup = 1
-'''
-
-# ステータスライン
 [[plugins]]
 repo = 'vim-airline/vim-airline'
 
@@ -52,6 +43,18 @@ let g:airline_section_x = '%{&filetype}'
 let g:airline#extensions#default#section_truncate_width = {}
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline_powerline_fonts=1
+'''
+
+# コメントアウト
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+# 補完
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+
+hook_add = '''
+let g:deoplete#enable_at_startup = 1
 '''
 
 # ファイラ
@@ -137,16 +140,12 @@ autocmd FileType defx call s:defx_my_settings()
   endfunction
 '''
 
-# コメントアウト
-[[plugins]]
-repo = 'tomtom/tcomment_vim'
-
 # ターミナル
 [[plugins]]
 repo = 'kassio/neoterm'
 hook_add = '''
 let g:neoterm_default_mod='belowright'
-let g:neoterm_size=10
+let g:neoterm_size=24
 let g:neoterm_autoscroll=1
 let g:neoterm_autoinsert=1
 
