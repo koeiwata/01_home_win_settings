@@ -29,43 +29,29 @@ let mapleader = "\<Space>"
 nnoremap ZZ <Nop>
 nnoremap ZQ <Nop>
 nnoremap <Leader>ww :<C-u>w<CR>
-nnoremap <Leader>wq :<C-u>q<CR>
-nnoremap <Leader>mq :<C-u>q<CR>
+nnoremap <Leader>qq :<C-u>q<CR>
 
 " EXモード"
 nnoremap Q <Nop>
 
 " バッファ操作
-nnoremap <Leader>mb :<C-u>ls<CR>
-nnoremap <Leader>mn :<C-u>bn<CR>
-nnoremap <Leader>mp :<C-u>bp<CR>
-nnoremap <Leader>md :<C-u>bd<CR>
+nnoremap <Leader>bb :<C-u>ls<CR>
+nnoremap <Leader>bn :<C-u>bn<CR>
+nnoremap <Leader>bp :<C-u>bp<CR>
+nnoremap <Leader>bd :<C-u>bd<CR>
 
 " ウィンドウ操作
+nnoremap <Leader>mm :<C-u>vs<CR><C-w>l
 nnoremap <Leader>ms :<C-u>sp<CR><C-w>j
-nnoremap <Leader>mv :<C-u>vs<CR><C-w>l
 nnoremap <Leader>mj <C-w>j
 nnoremap <Leader>mk <C-w>k
 nnoremap <Leader>mh <C-w>h
 nnoremap <Leader>ml <C-w>l
-nnoremap <Leader>mJ <C-w>J
-nnoremap <Leader>mK <C-w>K
-nnoremap <Leader>mL <C-w>L
-nnoremap <Leader>mH <C-w>H
-nnoremap <Leader>m<Right> 10<C-w>>
-nnoremap <Leader>m<Left> 10<C-w><
-nnoremap <Leader>m<Up> 10<C-w>+
-nnoremap <Leader>m<Down> 10<C-w>-
-
-" 画面スクロール
-nnoremap <Leader>mG zz
-nnoremap <Leader>mT zt
-nnoremap <Leader>mB zb
 
 " タブ操作
-nnoremap <Leader>Tt :<C-u>tabnew<CR>
-nnoremap <Leader>Tn gt
-nnoremap <Leader>Tp gT
+nnoremap <Leader>tt :<C-u>tabnew<CR>
+nnoremap <Leader>tn gt
+nnoremap <Leader>tp gT
 
 " カーソル移動のShiftボタンを無効にする
 nnoremap J <Nop>
@@ -80,13 +66,13 @@ nnoremap <Leader>h 10h
 nnoremap <Leader>l 10l
 nnoremap <Leader>a ^
 nnoremap <Leader>e $
-nnoremap <Leader>g M
-nnoremap <Leader>t H
-nnoremap <Leader>b L
+nnoremap <Leader>gm M
+nnoremap <Leader>gg H
+nnoremap <Leader>G L
 
 " タイポ修正
-" teh の e で t を押して the に直す
-nnoremap t xp
+" teh の h で t を押して the に直す
+nnoremap t <Left>xp
 
 " インクリメント・デクリメント
 nnoremap + <C-a>
@@ -100,7 +86,6 @@ nnoremap <Leader><CR> O<ESC>
 nnoremap <Leader>+ J
 
 " 行分割
-
 nnoremap <Leader>; i<CR><ESC>
 
 " 折り返し時に表示行単位での移動できるようにする
@@ -142,21 +127,18 @@ nnoremap <silent><Leader>* "zyiw:let @/ = '\<' . @z . '\>'<CR>:set hlsearch<CR>
 nmap # <Leader>*:%s/<C-r>///gc<Left><Left><Left>
 
 " ハイライト消去
-nnoremap <silent><Esc><Esc> :nohlsearch<CR><ESC>
-nnoremap <silent><C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent><Esc> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><C-[> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><C-b> :<C-u>nohlsearch<CR><ESC>
 
 " ----------------------------------------
 " ▼インサートモード
 
 " ノーマルモードに戻る（ESCの代替）
-inoremap <silent>jj <ESC><Right>
-inoremap <silent>っj <ESC><Right>
-inoremap <silent>っｊ <ESC><Right>
-inoremap <silent>ｊｊ <ESC><Right>
+inoremap <C-b> <ESC><Right>
 
 " Undoしてノーマルモードに戻る
-inoremap <silent>uuuu <ESC>u<Right>
-inoremap <silent>うううう <ESC>u<Right>
+inoremap <C-u> <ESC>u<Right>
 
 " カーソル移動
 inoremap <C-j> <Down>
@@ -187,25 +169,26 @@ inoremap 『 『』<left>
 inoremap 【 【】<left>
 inoremap ＜ ＜＞<left>
 
-" [! と打ったら 1つだけ [ を入力する
-inoremap [! [
-inoremap (! (
-inoremap {! {
-inoremap "! "
-inoremap '! '
-inoremap `! `
-inoremap <! <
-inoremap （！ （
-inoremap 「！ 「
-inoremap 『！ 『
-inoremap 【！ 【
-inoremap ＜！ ＜
+" [x と打ったら 1つだけ [ を入力する
+inoremap [x [
+inoremap (x (
+inoremap {x {
+inoremap "x "
+inoremap 'x '
+inoremap `x `
+inoremap <x <
+inoremap （ｘ （
+inoremap 「ｘ 「
+inoremap 『ｘ 『
+inoremap 【ｘ 【
+inoremap ＜ｘ ＜
 
 " ----------------------------------------
 " ▼ビジュアルモード
 
 " ESCの代替（右にESCする）
-vnoremap <C-]> <Esc><Right>
+vnoremap <C-[> <Esc><Right>
+vnoremap <C-b> <Esc><Right>
 
 " カーソル移動
 vnoremap <Leader>j 10j
@@ -214,9 +197,9 @@ vnoremap <Leader>h 10h
 vnoremap <Leader>l 10l
 vnoremap <Leader>a ^
 vnoremap <Leader>e $
-vnoremap <Leader>g M
-vnoremap <Leader>t H
-vnoremap <Leader>b L
+vnoremap <Leader>gm M
+vnoremap <Leader>gg H
+vnoremap <Leader>G L
 
 " インデントの調整後にビジュアルモードを解除しない
 vnoremap < <gv
@@ -252,10 +235,6 @@ endfunction
 " ----------------------------------------
 " ▼コマンドラインモード
 
-" Delete, Backspace
-cnoremap <C-d> <Del>
-cnoremap <C-b> <BS>
-
 " カーソル移動
 cnoremap <C-j> <Down>
 cnoremap <C-k> <Up>
@@ -263,6 +242,9 @@ cnoremap <C-h> <Left>
 cnoremap <C-l> <Right>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
+
+" Backspace
+cnoremap <C-d> <BS>
 
 
 " ------------------------------------------------------------------------------

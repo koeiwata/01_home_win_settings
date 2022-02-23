@@ -103,7 +103,7 @@ call defx#custom#option('_', {
       \ 'show_ignored_files': 1,
       \ })
 
-nnoremap <silent><Leader>f :<C-u>Defx -new `expand('%:p:h')` -search=`expand('%:p')`<CR>
+nnoremap <silent><Leader><Leader>f :<C-u>Defx -new `expand('%:p:h')` -search=`expand('%:p')`<CR>
 autocmd FileType defx call s:defx_my_settings()
   function! s:defx_my_settings() abort
     " Define mappings
@@ -149,10 +149,22 @@ let g:neoterm_size=24
 let g:neoterm_autoscroll=1
 let g:neoterm_autoinsert=1
 
-nnoremap <silent><Leader>t :<C-u>Tnew<CR>
-vnoremap <silent><Leader>t V:TREPLSendSelection<CR>'>j0
+nnoremap <silent><Leader><Leader>t :Ttoggle<CR>
 
-tnoremap <silent><ESC> <C-\><C-n><C-w>
-tnoremap <silent><C-[> <C-\><C-n><C-w>
+" ターミナルモードを抜ける
+tnoremap <ESC> <C-\><C-n><C-w>
+tnoremap <C-[> <C-\><C-n><C-w>
+tnoremap <C-b> <C-\><C-n><C-w>
+
+" カーソル移動
+tnoremap <C-j> <Down>
+tnoremap <C-k> <Up>
+tnoremap <C-h> <Left>
+tnoremap <C-l> <Right>
+tnoremap <C-a> <Home>
+tnoremap <C-e> <End>
+
+" Backspace
+tnoremap <C-d> <BS>
 '''
 
