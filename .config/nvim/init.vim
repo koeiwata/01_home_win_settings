@@ -127,15 +127,24 @@ nnoremap <silent><Leader>* "zyiw:let @/ = '\<' . @z . '\>'<CR>:set hlsearch<CR>
 nmap # <Leader>*:%s/<C-r>///gc<Left><Left><Left>
 
 " ハイライト消去
-nnoremap <silent><Esc> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><ESC> :<C-u>nohlsearch<CR><ESC>
 nnoremap <silent><C-[> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><C-]> :<C-u>nohlsearch<CR><ESC>
 nnoremap <silent><C-b> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><C-「> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><C-」> :<C-u>nohlsearch<CR><ESC>
+nnoremap <silent><C-ｂ> :<C-u>nohlsearch<CR><ESC>
 
 " ----------------------------------------
 " ▼インサートモード
 
 " ノーマルモードに戻る（ESCの代替）
+inoremap <C-[> <ESC><Right>
+inoremap <C-]> <ESC><Right>
 inoremap <C-b> <ESC><Right>
+inoremap <C-「> <ESC><Right>
+inoremap <C-」> <ESC><Right>
+inoremap <C-ｂ> <ESC><Right>
 
 " Undoしてノーマルモードに戻る
 inoremap <C-u> <ESC>u<Right>
@@ -153,7 +162,7 @@ inoremap <C-d> <BS>
 
 " タイポ修正
 " teh まで打ったあと the に直す
-inoremap <C-t> <Esc><Left>"zx"zpa
+inoremap <C-t> <ESC><Left>"zx"zpa
 
 " [ と打ったら [] と入力し、かっこの中にカーソルを移動する
 inoremap [ []<left>
@@ -187,8 +196,12 @@ inoremap ＜ｘ ＜
 " ▼ビジュアルモード
 
 " ESCの代替（右にESCする）
-vnoremap <C-[> <Esc><Right>
-vnoremap <C-b> <Esc><Right>
+vnoremap <C-[> <ESC><Right>
+vnoremap <C-]> <ESC><Right>
+vnoremap <C-b> <ESC><Right>
+vnoremap <C-「> <ESC><Right>
+vnoremap <C-」> <ESC><Right>
+vnoremap <C-ｂ> <ESC><Right>
 
 " カーソル移動
 vnoremap <Leader>j 10j
@@ -397,7 +410,7 @@ set scrolloff=5
 " 検索の挙動に関する設定:
 
 " 検索文字列が小文字の場合は大文字小文字を区別なく検索する (noignorecase:無視しない)
-set ignorecase
+"set ignorecase
 
 " 検索文字列に大文字が含まれている場合は区別して検索する
 set smartcase

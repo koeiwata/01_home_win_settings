@@ -154,7 +154,11 @@ nnoremap <silent><Leader><Leader>t :Ttoggle<CR>
 " ターミナルモードを抜ける
 tnoremap <ESC> <C-\><C-n><C-w>
 tnoremap <C-[> <C-\><C-n><C-w>
+tnoremap <C-]> <C-\><C-n><C-w>
 tnoremap <C-b> <C-\><C-n><C-w>
+tnoremap <C-「> <C-\><C-n><C-w>
+tnoremap <C-」> <C-\><C-n><C-w>
+tnoremap <C-ｂ> <C-\><C-n><C-w>
 
 " カーソル移動
 tnoremap <C-j> <Down>
